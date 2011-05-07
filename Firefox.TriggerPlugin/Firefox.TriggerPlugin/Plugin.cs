@@ -8,6 +8,8 @@ using NDde.Client;
 namespace Uploadinator.TriggerPlugins.Firefox
 {
     [Plugin("Firefox",
+        Version = "0.1",
+        Description = "Shorterns the URL in the currently active tab.",
         Author = "Richard Z.H. Wang",
         Supports = "0.10.1",
         TriggeredBy = "firefox.exe")]
