@@ -19,12 +19,14 @@ namespace Uploadinator.TriggerPlugins.Firefox
         {
             DdeClient dde = new DdeClient("Firefox", "WWW_GetWindowInfo");
             dde.Connect();
-            string result = dde.Request("URL", 1000);
+            var parts = dde.Request("URL", 1000).Split(',');
             dde.Disconnect();
 
-            var parts = result.Split(',');
-            Uri uri = new Uri(parts[0].Trim('"'));
-            return new PluginResult(uri);
+            // Result string is in the format "uri", "title", ...
+            Uri uri = new Uri(parts[0].Trim('"').Replace("\\\"", "\""));
+            string name = parts[1].Trim('"').Replace("\\\"", "\"");
+
+            return new PluginResult(uri, name);
         }
     }
 }
