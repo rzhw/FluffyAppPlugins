@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
-//using Photoshop;
 
 namespace Uploadinator.TriggerPlugins.Photoshop
 {
@@ -19,17 +18,6 @@ namespace Uploadinator.TriggerPlugins.Photoshop
         {
             string dir = Path.Combine(Path.GetTempPath(), "FluffyApp");
             Directory.CreateDirectory(dir);
-
-            //Application photoshop = new Application();
-            //if (photoshop != null)
-            //{
-            //    Document activeDocument = photoshop.ActiveDocument;
-            //    string newFilename = Path.GetFileNameWithoutExtension(activeDocument.Name) + ".png";
-            //    string savePath = Path.Combine(dir, newFilename);
-            //    activeDocument.SaveAs(savePath, new PNGSaveOptions(), true, PsExtensionType.psLowercase);
-
-            //    return PluginResult.FromPath(savePath);
-            //}
 
             Type photoshopType = Type.GetTypeFromProgID("Photoshop.Application");
             if (photoshopType != null)
