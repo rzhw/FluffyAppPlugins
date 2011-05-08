@@ -23,10 +23,10 @@ namespace Uploadinator.TriggerPlugins.Firefox
             dde.Disconnect();
 
             // Result string is in the format "uri", "title", ...
-            Uri uri = new Uri(parts[0].Trim('"').Replace("\\\"", "\""));
+            string url = parts[0].Trim('"').Replace("\\\"", "\"");
             string name = parts[1].Trim('"').Replace("\\\"", "\"");
 
-            return new PluginResult(uri, name);
+            return PluginResult.FromUrl(url, name);
         }
     }
 }
