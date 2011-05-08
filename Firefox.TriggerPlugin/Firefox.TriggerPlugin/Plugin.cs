@@ -13,7 +13,7 @@ namespace Uploadinator.TriggerPlugins.Firefox
         Author = "Richard Z.H. Wang",
         Supports = "0.10.1",
         TriggeredBy = "firefox.exe")]
-    public class TestPlugin : IPlugin
+    public class Plugin : IPlugin
     {
         public PluginResult OnTriggered()
         {
