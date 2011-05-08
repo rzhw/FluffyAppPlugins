@@ -11,7 +11,7 @@ namespace Uploadinator.TriggerPlugins.Photoshop
         Description = "(32-bit Photoshop only) Uploads an image of the currently active tab's state.",
         Author = "Richard Z.H. Wang",
         Supports = "0.10.1",
-        TriggeredBy = "photoshop.exe")]
+        TriggeredBy = "Photoshop.exe")]
     public class Plugin : IPlugin
     {
         public PluginResult OnTriggered()
