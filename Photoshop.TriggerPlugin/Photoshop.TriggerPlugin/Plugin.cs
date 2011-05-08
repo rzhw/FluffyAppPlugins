@@ -8,7 +8,7 @@ namespace Uploadinator.TriggerPlugins.Photoshop
 {
     [Plugin("Photoshop",
         Version = "0.1",
-        Description = "(32-bit only) Uploads an image of the currently active tab's state.",
+        Description = "(32-bit Photoshop only) Uploads an image of the currently active tab's state.",
         Author = "Richard Z.H. Wang",
         Supports = "0.10.1",
         TriggeredBy = "photoshop.exe")]
