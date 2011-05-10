@@ -10,11 +10,11 @@ namespace Uploadinator.TriggerPlugins.Photoshop
         Version = "0.1",
         Description = "(32-bit Photoshop only) Uploads an image of the currently active tab's state.",
         Author = "Richard Z.H. Wang",
-        Supports = "0.10.1",
+        Supports = "0.10.2",
         TriggeredBy = "Photoshop.exe")]
     public class Plugin : IPlugin
     {
-        public PluginResult OnTriggered()
+        public PluginResult OnTriggered(PluginTriggerEventArgs e)
         {
             string dir = Path.Combine(Path.GetTempPath(), "FluffyApp");
             Directory.CreateDirectory(dir);
