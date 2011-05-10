@@ -1,4 +1,10 @@
-﻿using System;
+﻿/**
+ * FluffyApp Firefox plugin
+ * Copyright (c) 2011, Richard Z.H. Wang
+ * Licensed under New BSD
+ */
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
