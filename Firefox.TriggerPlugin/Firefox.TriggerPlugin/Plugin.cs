@@ -11,11 +11,11 @@ namespace Uploadinator.TriggerPlugins.Firefox
         Version = "0.1",
         Description = "Shorterns the URL in the currently active tab.",
         Author = "Richard Z.H. Wang",
-        Supports = "0.10.1",
+        Supports = "0.10.2",
         TriggeredBy = "firefox.exe")]
     public class Plugin : IPlugin
     {
-        public PluginResult OnTriggered()
+        public PluginResult OnTriggered(PluginTriggerEventArgs e)
         {
             DdeClient dde = new DdeClient("Firefox", "WWW_GetWindowInfo");
             dde.Connect();
