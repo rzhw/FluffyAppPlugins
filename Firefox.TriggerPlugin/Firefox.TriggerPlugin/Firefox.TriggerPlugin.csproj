@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NDde">
-      <HintPath>..\NDde.dll</HintPath>
+      <HintPath>..\..\NDde.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
