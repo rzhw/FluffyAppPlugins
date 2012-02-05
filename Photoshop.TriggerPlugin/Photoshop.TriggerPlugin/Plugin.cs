@@ -1,6 +1,6 @@
 ﻿/**
  * FluffyApp Photoshop plugin
- * Copyright (c) 2011, Richard Z.H. Wang
+ * Copyright (c) 2011-2012 Richard Z.H. Wang
  * Licensed under New BSD
  */
 
@@ -13,10 +13,10 @@ using System.Text;
 namespace Uploadinator.TriggerPlugins.Photoshop
 {
     [Plugin("Photoshop",
-        Version = "0.1",
-        Description = "(32-bit Photoshop only) Uploads an image of the currently active tab's state.",
+        Version = "0.1.1",
+        Description = "Uploads an image of the currently active tab's state.",
         Author = "Richard Z.H. Wang",
-        Supports = "0.10.2",
+        Supports = "1.1.0",
         TriggeredBy = "Photoshop.exe")]
     public class Plugin : IPlugin
     {
