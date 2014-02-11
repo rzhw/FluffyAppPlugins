@@ -1,6 +1,6 @@
 /**
  * FluffyApp Google Chrome plugin
- * Copyright (c) 2011, Richard Z.H. Wang & Sebastian Müller
+ * Copyright (c) 2011, 2014 Richard Z.H. Wang
  * Licensed under New BSD
  */
 
@@ -10,44 +10,29 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Automation;
 
 namespace Uploadinator.TriggerPlugins.Chrome
 {
     [Plugin("Chrome",
-        Version = "0.2",
-        Description = "Shorterns the URL in the currently active tab.",
-        Author = "Richard Z.H. Wang, Sebastian Müller",
+        Version = "1.3",
+        Description = "Shorterns the URL in the currently active tab. Requires Chrome 28+",
+        Author = "Richard Z.H. Wang",
         Supports = "0.10.2",
         TriggeredBy = "chrome.exe")]
     public class Plugin : IPlugin
     {
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        static extern int GetWindowTextLength(IntPtr hWnd);
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-        static extern IntPtr SendMessage(IntPtr hWnd, Int32 Msg, IntPtr wParam, StringBuilder lParam);
-        private const int WM_GETTEXT = 0x000D;
-        private const uint MAX_PATH = 255;
-
         public PluginResult OnTriggered(PluginTriggerEventArgs e)
         {
-            IntPtr ownerHandle = e.Handle;
-            IntPtr tabHandle = FindWindowEx(ownerHandle, IntPtr.Zero, "Chrome_WidgetWin_0", null);
-            IntPtr omniboxHandle = FindWindowEx(ownerHandle, IntPtr.Zero, "Chrome_OmniboxView", null);
+            var windowElm = AutomationElement.FromHandle(e.Handle);
 
-            // The tab window's title gives the page's title - perfect!
-            StringBuilder sbTitle = new StringBuilder(GetWindowTextLength(tabHandle) + 1);
-            GetWindowText(tabHandle, sbTitle, sbTitle.Capacity);
-            string tabTitle = sbTitle.ToString();
+            var omniboxElm = windowElm.FindFirst(
+                TreeScope.Descendants,
+                new PropertyCondition(AutomationElement.NameProperty, "Address and search bar"));
 
-            // Omnibox contents can be changed at any time, so it's *really* unreliable. But it's the only thing available.
-            // Also, since GetWindowText won't work, we'll need to use SendMessage with WM_GETTEXT instead.
-            StringBuilder sbUrl = new StringBuilder(256);
-            SendMessage(omniboxHandle, WM_GETTEXT, (IntPtr)MAX_PATH, sbUrl);
-            string omniboxText = sbUrl.ToString().Trim(new char[] { ' ', '\0', '\n' });
+            // Omnibox contents can be changed at any time, so it's not the most reliable. But it's the only thing available
+            var omniboxValuePattern = (ValuePattern)omniboxElm.GetCurrentPattern(ValuePattern.Pattern);
+            string omniboxText = omniboxValuePattern.Current.Value;
 
             // The Omnibox drops "http://" off URLs if that's the protocol of the URL
             if (!Uri.IsWellFormedUriString(omniboxText, UriKind.Absolute))
@@ -57,7 +42,25 @@ namespace Uploadinator.TriggerPlugins.Chrome
                     return null;
             }
 
-            return PluginResult.FromUrl(omniboxText, tabTitle);
+            // The tab window's title gives the page's title
+            // Chrome's automation stuff doesn't seem to give any indicators as to which one's active
+            // so look for one that's a substring of the window title
+            string windowTitle = (string)windowElm.GetCurrentPropertyValue(AutomationElement.NameProperty);
+
+            var tabElms = windowElm.FindAll(
+                TreeScope.Descendants,
+                new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.TabItem));
+
+            string currentTabTitle = omniboxText;
+
+            foreach (var tabElm in tabElms.Cast<AutomationElement>())
+            {
+                string tabTitle = (string)tabElm.GetCurrentPropertyValue(AutomationElement.NameProperty);
+                if (windowTitle.Contains(tabTitle))
+                    currentTabTitle = tabTitle;
+            }
+
+            return PluginResult.FromUrl(omniboxText, currentTabTitle);
         }
     }
 }

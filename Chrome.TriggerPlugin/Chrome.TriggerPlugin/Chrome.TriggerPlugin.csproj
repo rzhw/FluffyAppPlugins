@@ -40,6 +40,8 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="UIAutomationTypes" />
     <Reference Include="Uploadinator.PluginBase">
       <HintPath>..\..\Uploadinator.PluginBase.dll</HintPath>
       <Private>False</Private>
