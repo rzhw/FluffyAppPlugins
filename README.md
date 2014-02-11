@@ -1,8 +1,6 @@
 FluffyApp Plugins
 =================
 
-Todo. See the wiki at GitHub.
+Plugins for FluffyApp, a 3rd party CloudApp client for Windows.
 
-Pull requests are welcome!
-
--Richard
+To get started, copy in `Uploadinator.PluginBase.dll` from a copy of FluffyApp into the root directory.
